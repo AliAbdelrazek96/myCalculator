@@ -26,9 +26,12 @@ const equalsButton = document.getElementById('equals');
 
 const display = document.getElementById('display');
 
+let currentValue = '';
+
 // Function to update the display with the clicked number
 function updateDisplay(number) {
   display.textContent += number;
+  currentValue += number;
 }
 
 // Clear the display when AC button is clicked
@@ -80,6 +83,18 @@ nineButton.addEventListener('click', function() {
 decimalButton.addEventListener('click', function() {
   updateDisplay('.');
 });
+
+//when an operator is pressed, store the numbers in firstNumber, 
+//save which operation was chosen
+//run the function(operate) when the = button is pressed
+const operatorButtons = document.querySelectorAll('.operator')
+//now we grabbed all operators in a nodeList
+
+operatorButtons.forEach((button)=> {
+    button.addEventListener('click', () => {
+        updateDisplay(button.textContent)
+    })
+})
 
 
 
