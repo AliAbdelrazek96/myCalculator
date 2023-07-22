@@ -27,8 +27,6 @@ let firstNumber = '';
 let secondNumber = '';
 let operator = '';
 
-
-
 // // Clear the display when AC button is clicked
 ACButton.addEventListener('click', clearThings);
 function clearThings() {
@@ -43,22 +41,22 @@ function clearThings() {
 const nums = document.querySelectorAll('.num')
 nums.forEach((button) => {
     button.addEventListener('click', () => {
-      if (operator && !secondNumber) { //operator = '+', currentValue = '99'
-         display.textContent = '';
-         display.textContent += button.textContent; 
-         secondNumber += display.textContent //we stop it after secondNumber is true
-         secondNumber = Number(secondNumber)
-      } 
-      else if (operator && secondNumber) {
-         display.textContent += button.textContent;
-         currentValue = display.textContent
-         secondNumber = Number(currentValue)
-         console.log(secondNumber)
-      }
-      else if (!operator) {
+     if (!operator) {
         display.textContent += button.textContent;
         currentValue = display.textContent;
       }
+      else if (operator && !secondNumber) { //operator = '+', currentValue = '99'
+        display.textContent = '';
+        display.textContent += button.textContent; 
+        secondNumber += display.textContent //we stop it after secondNumber is true
+        secondNumber = Number(secondNumber)
+     } 
+     else if (operator && secondNumber) {
+        display.textContent += button.textContent;
+        currentValue = display.textContent
+        secondNumber = Number(currentValue)
+        console.log(secondNumber)
+     }
     })
 })
 
@@ -74,36 +72,45 @@ operatorButtons.forEach((button)=> {
                 console.log(firstNumber)
                 console.log(operator)
             }
+        if (operator && secondNumber) { //both exist and instead of equals, u press another operator!
+          operate(operator, firstNumber, secondNumber) //first calculate the first one
+          operator = button.textContent; //then reset the operator
+          secondNumber = ''; 
+        }
     })
 })
 
+//calculate result
 equalsButton.addEventListener('click', () => operate(operator, firstNumber, secondNumber))
 
 
+//display result and reset for next calculation
+  function displayResult(result) {
+    display.textContent = Math.round(result*1000)/1000; 
+    firstNumber = result //this become first number for next calculation!
+    secondNumber = ''; //secondNumber is reset;
+    operator = ''; //operator is reset, will b
+    }
 
-  function updateDisplay(result) {
-    display.textContent = result;
-    console.log(result)
-  }
 
-
+    //basic functions
   function add(a,b) {
-    updateDisplay(a + b);
+    displayResult(a + b);
 }
 
 function subtract(a,b) {
-    updateDisplay(a - b)
+    displayResult(a - b)
 }
 
 function multiply(a,b) {
-    updateDisplay(a * b)
+    displayResult(a * b)
 }
 
 function divide(a,b) {
-    updateDisplay(a / b); 
+    displayResult(a / b); 
 }
 
-
+//implement functionality
 function operate(op,first,second) {
   switch (op) {
             case '+':
@@ -118,5 +125,7 @@ function operate(op,first,second) {
             case '/':
               divide(first,second);
               break;
-          }
+            }
+
+            
         }
