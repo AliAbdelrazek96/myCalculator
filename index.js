@@ -1,4 +1,3 @@
-
 //grab HTML elements
 const ACButton = document.getElementById('AC');
 const plusMinusButton = document.getElementById('plus-minus');
@@ -28,100 +27,150 @@ const display = document.getElementById('display');
 
 //define variables
 let currentValue = '';
-let firstNumber;
-let secondNumber;
-let operator;
+let firstNumber = '';
+let secondNumber = '';
+let operator = '';
 
 
-// Function to update the display with the clicked number
-function updateDisplay(entry) {
-  display.textContent += entry;
-  currentValue += entry;
+// // Function to update the display with the clicked number
+// function updateDisplay(entry) {
+//   display.textContent += entry; //if u remove += the operator 
+//   //will clear out the display!!
+//   currentValue += entry;
+// }
+
+// // Clear the display when AC button is clicked
+ACButton.addEventListener('click', clearThings);
+
+
+function clearThings() {
+  display.textContent = ''
+  currentValue = ''
+  firstNumber = ''
+  secondNumber = '';
+  operator='';
 }
 
-// Clear the display when AC button is clicked
-ACButton.addEventListener('click', function() {
-  display.textContent = '';
-});
-
-//display numbers when number buttons are displayed
+// //display numbers when number buttons are displayed
 const nums = document.querySelectorAll('.num')
-
 nums.forEach((button) => {
     button.addEventListener('click', () => {
-        if (!currentValue) {
-            display.textContent = '';
-        }
-        if (!operator) {
-            firstNumber = Number(button.textContent);
-            updateDisplay(firstNumber);
-        } else if (operator) {
-            secondNumber = Number(button.textContent);
-            updateDisplay(secondNumber);
-        }
+      if (operator && !secondNumber) { //toperator = '+', currentValue = '99'
+         display.textContent = '';
+         display.textContent += button.textContent; 
+         secondNumber += display.textContent //we stop it after secondNumber is true
+         secondNumber = Number(secondNumber)
+      } 
+      else if (operator && secondNumber) {
+         display.textContent += button.textContent;
+         currentValue = display.textContent
+         secondNumber = Number(currentValue)
+         console.log(secondNumber)
+      }
+      else if (!operator) {
+        display.textContent += button.textContent;
+        currentValue = display.textContent;
+      }
+
+        // if (!currentValue) {
+        //     display.textContent = '';
+        // }
+        // if (!operator) {
+        //     //firstNumber value is ALWAYS gunna be 9 never 99!
+        //     firstNumber += button.textContent; //9
+        //     updateDisplay(firstNumber);
+        // } else if (operator) {
+        //     secondNumber += button.textContent;
+        //     updateDisplay(secondNumber)
+        // }
     })
 })
 
-//when an operator is pressed, store the number in firstNumber, 
-//save which operation was chosen
-//run the function(operate) when the = button is pressed
+// //when an operator is pressed, store the number in firstNumber, 
+// //save which operation was chosen
+// //run the function(operate) when the = button is pressed
 const operatorButtons = document.querySelectorAll('.operator')
-//now we grabbed all operators in a nodeList
-
-
-//display and select operator when it's pressed
 operatorButtons.forEach((button)=> {
     button.addEventListener('click', () => {
         if (!operator) {
-                operator = button.textContent; //save operator
-                updateDisplay(operator)
-        }
+                operator = button.textContent;
+                firstNumber = Number(currentValue)
+                console.log(firstNumber)
+                console.log(operator)
+            }
     })
 })
 
-equalsButton.addEventListener('click', operate)
+equalsButton.addEventListener('click', () => operate(operator, firstNumber, secondNumber))
 
 
 
-//basic functions
-// function add(a,b) {
-//     return a + b
-// }
 
-// function subtract(a,b) {
-//     return a - b
-// }
 
-// function multiply(a,b) {
-//     return a * b
-// }
 
-// function divide(a,b) {
-//     return a/b 
-// }
+// function operate() {
+//     console.log(firstNumber)
+//         console.log(secondNumber)
+//     if (operator && typeof firstNumber !== 'undefined' && typeof secondNumber !== 'undefined') {
+//       switch (operator) {
+        
+//         case '+':
+//           firstNumber += secondNumber;
+//           break;
+//         case '-':
+//           firstNumber -= secondNumber;
+//           break;
+//         case '*':
+//           firstNumber *= secondNumber;
+//           break;
+//         case '/':
+//           firstNumber /= secondNumber;
+//           break;
+//       }
+//       display.textContent = firstNumber;
+//       currentValue = '';
+//       operator = '';
+//       secondNumber = undefined;
+      
+//     }
+//   }
 
-function operate() {
-    if (operator && typeof firstNumber !== 'undefined' && typeof secondNumber !== 'undefined') {
-      switch (operator) {
-        case '+':
-          firstNumber += secondNumber;
-          break;
-        case '-':
-          firstNumber -= secondNumber;
-          break;
-        case '*':
-          firstNumber *= secondNumber;
-          break;
-        case '/':
-          firstNumber /= secondNumber;
-          break;
-      }
-      display.textContent = firstNumber;
-      currentValue = '';
-      operator = '';
-      secondNumber = undefined;
-    }
+  function updateDisplay(result) {
+    display.textContent = result;
+    console.log(result)
   }
 
-  
 
+  function add(a,b) {
+    updateDisplay(a + b);
+}
+
+function subtract(a,b) {
+    updateDisplay(a - b)
+}
+
+function multiply(a,b) {
+    updateDisplay(a * b)
+}
+
+function divide(a,b) {
+    updateDisplay(a / b); 
+}
+
+
+function operate(op,first,second) {
+  switch (op) {
+            case '+':
+              add(first,second)
+              break;
+            case '-':
+              subtract(first,second);
+              break;
+            case '*':
+              multiply(first,second);
+              break;
+            case '/':
+              divide(first,second);
+              break;
+          }
+        }
