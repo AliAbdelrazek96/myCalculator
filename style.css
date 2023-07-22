@@ -53,11 +53,11 @@ button:hover {
   flex-basis: 113.5px;
 }
 
-.operator {
+.operator, .equal {
   background-color: #FF8F1F;
   
 }
-.operator:hover {
+.operator:hover, .equal:hover {
   background-color: hsl(37, 89.66%, 70%)
 }
 

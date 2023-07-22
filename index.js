@@ -26,12 +26,17 @@ const equalsButton = document.getElementById('equals');
 
 const display = document.getElementById('display');
 
+//define variables
 let currentValue = '';
+let firstNumber;
+let secondNumber;
+let operator;
+
 
 // Function to update the display with the clicked number
-function updateDisplay(number) {
-  display.textContent += number;
-  currentValue += number;
+function updateDisplay(entry) {
+  display.textContent += entry;
+  currentValue += entry;
 }
 
 // Clear the display when AC button is clicked
@@ -39,96 +44,84 @@ ACButton.addEventListener('click', function() {
   display.textContent = '';
 });
 
-// Click event listeners for number buttons
-zeroButton.addEventListener('click', function() {
-  updateDisplay('0');
-});
+//display numbers when number buttons are displayed
+const nums = document.querySelectorAll('.num')
 
-oneButton.addEventListener('click', function() {
-  updateDisplay('1');
-});
+nums.forEach((button) => {
+    button.addEventListener('click', () => {
+        if (!currentValue) {
+            display.textContent = '';
+        }
+        if (!operator) {
+            firstNumber = Number(button.textContent);
+            updateDisplay(firstNumber);
+        } else if (operator) {
+            secondNumber = Number(button.textContent);
+            updateDisplay(secondNumber);
+        }
+    })
+})
 
-twoButton.addEventListener('click', function() {
-  updateDisplay('2');
-});
-
-threeButton.addEventListener('click', function() {
-  updateDisplay('3');
-});
-
-fourButton.addEventListener('click', function() {
-  updateDisplay('4');
-});
-
-fiveButton.addEventListener('click', function() {
-  updateDisplay('5');
-});
-
-sixButton.addEventListener('click', function() {
-  updateDisplay('6');
-});
-
-sevenButton.addEventListener('click', function() {
-  updateDisplay('7');
-});
-
-eightButton.addEventListener('click', function() {
-  updateDisplay('8');
-});
-
-nineButton.addEventListener('click', function() {
-  updateDisplay('9');
-});
-
-decimalButton.addEventListener('click', function() {
-  updateDisplay('.');
-});
-
-//when an operator is pressed, store the numbers in firstNumber, 
+//when an operator is pressed, store the number in firstNumber, 
 //save which operation was chosen
 //run the function(operate) when the = button is pressed
 const operatorButtons = document.querySelectorAll('.operator')
 //now we grabbed all operators in a nodeList
 
+
+//display and select operator when it's pressed
 operatorButtons.forEach((button)=> {
     button.addEventListener('click', () => {
-        updateDisplay(button.textContent)
+        if (!operator) {
+                operator = button.textContent; //save operator
+                updateDisplay(operator)
+        }
     })
 })
 
-
-
-
-
-
-
-//define variables
-let firstNumber;
-let secondNumber;
-let operator;
+equalsButton.addEventListener('click', operate)
 
 
 
 //basic functions
-function add(a,b) {
-    return a + b
-}
+// function add(a,b) {
+//     return a + b
+// }
 
-function subtract(a,b) {
-    return a - b
-}
+// function subtract(a,b) {
+//     return a - b
+// }
 
-function multiply(a,b) {
-    return a * b
-}
+// function multiply(a,b) {
+//     return a * b
+// }
 
-function divide(a,b) {
-    return a/b 
-}
+// function divide(a,b) {
+//     return a/b 
+// }
 
+function operate() {
+    if (operator && typeof firstNumber !== 'undefined' && typeof secondNumber !== 'undefined') {
+      switch (operator) {
+        case '+':
+          firstNumber += secondNumber;
+          break;
+        case '-':
+          firstNumber -= secondNumber;
+          break;
+        case '*':
+          firstNumber *= secondNumber;
+          break;
+        case '/':
+          firstNumber /= secondNumber;
+          break;
+      }
+      display.textContent = firstNumber;
+      currentValue = '';
+      operator = '';
+      secondNumber = undefined;
+    }
+  }
 
-function operate(a,op,b) {
-    add(firstNumber,secondNumber)
-}
-
+  
 
