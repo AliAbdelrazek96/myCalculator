@@ -50,6 +50,7 @@ nums.forEach((button) => {
         display.textContent += button.textContent; 
         secondNumber += display.textContent //we stop it after secondNumber is true
         secondNumber = Number(secondNumber)
+        console.log(secondNumber)
      } 
      else if (operator && secondNumber) {
         display.textContent += button.textContent;
@@ -88,6 +89,8 @@ equalsButton.addEventListener('click', () => operate(operator, firstNumber, seco
   function displayResult(result) {
     display.textContent = Math.round(result*1000)/1000; 
     firstNumber = result //this become first number for next calculation!
+    currentValue = firstNumber
+    console.log(firstNumber)
     secondNumber = ''; //secondNumber is reset;
     operator = ''; //operator is reset, will b
     }
@@ -107,6 +110,9 @@ function multiply(a,b) {
 }
 
 function divide(a,b) {
+   if (b === 0) {
+    display.textContent = 'Error'
+    return;}
     displayResult(a / b); 
 }
 
