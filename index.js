@@ -21,6 +21,7 @@ const decimalButton = document.getElementById('decimal');
 const equalsButton = document.getElementById('equals');
 const display = document.getElementById('display');
 
+
 //define variables
 let currentValue = '';
 let firstNumber = '';
@@ -30,7 +31,7 @@ let operator = '';
 // // Clear the display when AC button is clicked
 ACButton.addEventListener('click', clearThings);
 function clearThings() {
-  display.textContent = ''
+  display.textContent = '';
   currentValue = ''
   firstNumber = ''
   secondNumber = '';
@@ -41,25 +42,49 @@ function clearThings() {
 const nums = document.querySelectorAll('.num')
 nums.forEach((button) => {
     button.addEventListener('click', () => {
+      //if no numbers yet
      if (!operator) {
         display.textContent += button.textContent;
         currentValue = display.textContent;
       }
-      else if (operator && !secondNumber) { //operator = '+', currentValue = '99'
-        display.textContent = '';
+      //if there's a firstnumber but no secondnumber
+      else if (operator && !secondNumber) {
+        debugger; //operator = '+', currentValue = '99'
+        if (!currentValue.includes('.')) { 
+          display.textContent = '';
+        }
         display.textContent += button.textContent; 
         secondNumber += display.textContent //we stop it after secondNumber is true
-        secondNumber = Number(secondNumber)
         console.log(secondNumber)
-     } 
+     }  
+     //handling continuous calculations
      else if (operator && secondNumber) {
         display.textContent += button.textContent;
         currentValue = display.textContent
-        secondNumber = Number(currentValue)
+        secondNumber = currentValue;
         console.log(secondNumber)
      }
     })
 })
+
+//handling decimals
+decimalButton.addEventListener('click', ()=> {
+  // Check if the current display already contains a decimal point
+  if (currentValue.includes('.') && !operator) {
+    return;
+  }
+  
+  if (operator && !Number(currentValue) < 1) {
+  display.textContent = '';   //doesn't work width numn
+  currentValue = ''; }
+  display.textContent += '.';
+  currentValue += '.';
+})
+
+
+
+
+
 
 // //when an operator is pressed, store the number in firstNumber, 
 // //save which operation was chosen
@@ -69,11 +94,11 @@ operatorButtons.forEach((button)=> {
     button.addEventListener('click', () => {
         if (!operator) {
                 operator = button.textContent;
-                firstNumber = Number(currentValue)
+                firstNumber = currentValue
                 console.log(firstNumber)
                 console.log(operator)
             }
-        if (operator && secondNumber) { //both exist and instead of equals, u press another operator!
+        if (operator && secondNumber && secondNumber != '.') { //both exist and instead of equals, u press another operator!
           operate(operator, firstNumber, secondNumber) //first calculate the first one
           operator = button.textContent; //then reset the operator
           secondNumber = ''; 
@@ -82,7 +107,7 @@ operatorButtons.forEach((button)=> {
 })
 
 //calculate result
-equalsButton.addEventListener('click', () => operate(operator, firstNumber, secondNumber))
+equalsButton.addEventListener('click', () => operate(operator, Number(firstNumber), Number(secondNumber)))
 
 
 //display result and reset for next calculation
