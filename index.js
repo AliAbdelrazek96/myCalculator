@@ -28,22 +28,55 @@ let firstNumber = '';
 let secondNumber = '';
 let operator = '';
 
+
 // // Clear the display when AC button is clicked
 ACButton.addEventListener('click', clearThings);
 function clearThings() {
-  display.textContent = '';
+  display.textContent = '0';
   currentValue = ''
   firstNumber = ''
   secondNumber = '';
   operator='';
 }
 
+
+
+//plusMinusButton functionality
+plusMinusButton.addEventListener('click', () => {
+  if ( !operator || operator && secondNumber) {
+        const negativeValue = display.textContent *= -1;
+        currentValue = negativeValue;
+        if (secondNumber) {
+          secondNumber = currentValue;
+          console.log(secondNumber)
+         }
+  }
+})
+
+//percentageButton functionality
+percentageButton.addEventListener('click', () => {
+  if (limitToTen) {
+  if (!operator || operator && secondNumber) {
+  const percentage = display.textContent /= 100;
+  currentValue = percentage;
+      if (secondNumber) {
+          secondNumber = currentValue;
+          console.log(secondNumber)
+      }
+    }
+  
+}})
+
 // //display numbers when number buttons are displayed
 const nums = document.querySelectorAll('.num')
 nums.forEach((button) => {
     button.addEventListener('click', () => {
+
       //if no numbers yet
      if (!operator) {
+        if (display.textContent === '0') { //remove the zero
+          display.textContent = '';
+        }
         display.textContent += button.textContent;
         currentValue = display.textContent;
       }
@@ -52,7 +85,8 @@ nums.forEach((button) => {
  //operator = '+', currentValue = '99'
           display.textContent = '';
         display.textContent += button.textContent; 
-        secondNumber += display.textContent //we stop it after secondNumber is true
+        currentValue = display.textContent;
+        secondNumber += currentValue; //we stop it after secondNumber is true
         console.log(secondNumber)
      }  
      //handling continuous calculations
@@ -62,16 +96,17 @@ nums.forEach((button) => {
         secondNumber = currentValue;
         console.log(secondNumber)
      }
-    })
+})
 })
 
 //handling decimals
 decimalButton.addEventListener('click', ()=> {
+ 
   if (!currentValue) { //no display at all
-    display.textContent = '.';                 
+    display.textContent = '0.';                 
   }
   else if (operator && !secondNumber.includes('.') && !secondNumber) { // 0.9 case
-    display.textContent = '.';
+    display.textContent = '0.';
     secondNumber = '.';
   }
   else if (currentValue && !display.textContent.includes('.') ) { // 9,1 case, no operator
@@ -132,9 +167,6 @@ equalsButton.addEventListener('click', () => operate(operator, Number(firstNumbe
 }
 
 
-    
-
-
     //basic functions
   function add(a,b) {
     displayResult(a + b);
@@ -176,3 +208,10 @@ function operate(op,first,second) {
             display.textContent = 'Error';
           }
         }
+
+
+      
+
+
+
+       
