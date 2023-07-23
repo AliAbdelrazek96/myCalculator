@@ -49,10 +49,8 @@ nums.forEach((button) => {
       }
       //if there's a firstnumber but no secondnumber
       else if (operator && !secondNumber) {
-        debugger; //operator = '+', currentValue = '99'
-        if (!currentValue.includes('.')) { 
+ //operator = '+', currentValue = '99'
           display.textContent = '';
-        }
         display.textContent += button.textContent; 
         secondNumber += display.textContent //we stop it after secondNumber is true
         console.log(secondNumber)
@@ -69,18 +67,22 @@ nums.forEach((button) => {
 
 //handling decimals
 decimalButton.addEventListener('click', ()=> {
-  // Check if the current display already contains a decimal point
-  if (currentValue.includes('.') && !operator) {
-    return;
+  if (!currentValue) { //no display at all
+    display.textContent = '.';                 
   }
-  
-  if (operator && !Number(currentValue) < 1) {
-  display.textContent = '';   //doesn't work width numn
-  currentValue = ''; }
-  display.textContent += '.';
-  currentValue += '.';
+  else if (operator && !secondNumber.includes('.') && !secondNumber) { // 0.9 case
+    display.textContent = '.';
+    secondNumber = '.';
+  }
+  else if (currentValue && !display.textContent.includes('.') ) { // 9,1 case, no operator
+    display.textContent += '.';
+    secondNumber += '.';
+  }
+  else if (operator && !secondNumber.includes('.') && secondNumber) {   //9.1 case
+    display.textContent += '.';
+    secondNumber += '.';
+  }
 })
-
 
 
 
@@ -106,19 +108,31 @@ operatorButtons.forEach((button)=> {
     })
 })
 
+
+
+
 //calculate result
 equalsButton.addEventListener('click', () => operate(operator, Number(firstNumber), Number(secondNumber)))
 
 
 //display result and reset for next calculation
   function displayResult(result) {
-    display.textContent = Math.round(result*1000)/1000; 
-    firstNumber = result //this become first number for next calculation!
-    currentValue = firstNumber
-    console.log(firstNumber)
-    secondNumber = ''; //secondNumber is reset;
-    operator = ''; //operator is reset, will b
+          const finalResult = Math.round(result*1000)/1000;
+          display.textContent = finalResult  
+          handleError(finalResult);
+          continuousCalculations(finalResult);
     }
+
+    function continuousCalculations(num) {
+      firstNumber = num //this become first number for next calculation!
+      currentValue = firstNumber
+      console.log(firstNumber)
+      secondNumber = ''; //secondNumber is reset;
+      operator = ''; //operator is reset
+}
+
+
+    
 
 
     //basic functions
@@ -135,9 +149,6 @@ function multiply(a,b) {
 }
 
 function divide(a,b) {
-   if (b === 0) {
-    display.textContent = 'Error'
-    return;}
     displayResult(a / b); 
 }
 
@@ -156,7 +167,12 @@ function operate(op,first,second) {
             case '/':
               divide(first,second);
               break;
-            }
+            }  
+        }
 
-            
+
+        function handleError(value) {
+          if (value === Infinity) {
+            display.textContent = 'Error';
+          }
         }
