@@ -55,7 +55,6 @@ plusMinusButton.addEventListener('click', () => {
 
 //percentageButton functionality
 percentageButton.addEventListener('click', () => {
-  if (limitToTen) {
   if (!operator || operator && secondNumber) {
   const percentage = display.textContent /= 100;
   currentValue = percentage;
@@ -63,17 +62,15 @@ percentageButton.addEventListener('click', () => {
           secondNumber = currentValue;
           console.log(secondNumber)
       }
-    }
-  
-}})
+    } 
+})
 
 // //display numbers when number buttons are displayed
 const nums = document.querySelectorAll('.num')
 nums.forEach((button) => {
     button.addEventListener('click', () => {
-
       //if no numbers yet
-     if (!operator) {
+     if (!operator && !firstNumber) {
         if (display.textContent === '0') { //remove the zero
           display.textContent = '';
         }
@@ -88,14 +85,19 @@ nums.forEach((button) => {
         currentValue = display.textContent;
         secondNumber += currentValue; //we stop it after secondNumber is true
         console.log(secondNumber)
-     }  
+     }     
      //handling continuous calculations
      else if (operator && secondNumber) {
         display.textContent += button.textContent;
         currentValue = display.textContent
         secondNumber = currentValue;
         console.log(secondNumber)
-     }
+     } 
+     if (firstNumber && !secondNumber && !operator) { //starting new calculations abruptly
+      display.textContent = button.textContent;
+      firstNumber = '';
+      currentValue = display.textContent;
+  } 
 })
 })
 
@@ -153,7 +155,7 @@ equalsButton.addEventListener('click', () => operate(operator, Number(firstNumbe
 //display result and reset for next calculation
   function displayResult(result) {
           const finalResult = Math.round(result*1000)/1000;
-          display.textContent = 'Ya Ahbal'  
+          display.textContent = finalResult;
           handleError(finalResult);
           continuousCalculations(finalResult);
     }
