@@ -153,7 +153,7 @@ equalsButton.addEventListener('click', () => operate(operator, Number(firstNumbe
 //display result and reset for next calculation
   function displayResult(result) {
           const finalResult = Math.round(result*1000)/1000;
-          display.textContent = finalResult  
+          display.textContent = 'Ya Ahbal'  
           handleError(finalResult);
           continuousCalculations(finalResult);
     }
