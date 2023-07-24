@@ -103,7 +103,6 @@ nums.forEach((button) => {
 
 //handling decimals
 decimalButton.addEventListener('click', ()=> {
- 
   if (!currentValue) { //no display at all
     display.textContent = '0.';                 
   }
@@ -111,6 +110,11 @@ decimalButton.addEventListener('click', ()=> {
     display.textContent = '0.';
     secondNumber = '.';
   }
+  else if (firstNumber && !secondNumber && !operator) { //starting new calculations abruptly
+    display.textContent = '0.';
+    firstNumber = '';
+    currentValue = display.textContent;
+} 
   else if (currentValue && !display.textContent.includes('.') ) { // 9,1 case, no operator
     display.textContent += '.';
     secondNumber += '.';
@@ -119,6 +123,7 @@ decimalButton.addEventListener('click', ()=> {
     display.textContent += '.';
     secondNumber += '.';
   }
+ 
 })
 
 
